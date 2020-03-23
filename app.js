@@ -22,9 +22,12 @@ mongoose.connect(process.env.db, {
 //import index.js
 const index = require('./routes/index');
 app.use('/', index);
+const tripRoutes = require('./routes/tripRoutes');
+app.use('/', tripRoutes);
+
 //listener
 const http = require('http');
-let server = http.createServer(app);
+const server = http.createServer(app);
 server.on('error', error => {
     if (error.syscall !== 'listen') {
         throw error
