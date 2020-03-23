@@ -1,9 +1,9 @@
 {
   "name": "project2",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,5 +25,6 @@
     "express-session": "^1.17.0",
     "hbs": "^4.1.0",
     "mongoose": "^5.9.5"
-  }
+  },
+  "description": ""
 }
