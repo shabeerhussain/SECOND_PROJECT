@@ -27,6 +27,13 @@ app.use(session({
         ttl: 24 * 60 * 60 // 1 day
     })
 }));
+
+app.use(function(req,res,next){
+    if(req.session.currentUser){
+        res.locals.user = req.session.currentUser;
+    }
+    next();
+})
 const router = require('./routes/auth'); // setting up all the routes a root
 app.use('/', router);
 hbs.registerPartials(__dirname + '/views/partials'); //all files in views/partials will be treated as partials 

@@ -114,6 +114,7 @@ router.post("/login", (req, res, next) => { // this login
       bcrypt.compare(req.body.password, user.password, (err, result) => { //bcrypt password check between user entered password and the password in the DB
         if (result == true) {
           req.session.isloggedin = true // setting up the session and redirecting the use to the main page
+          req.session.currentUser = user;
           req.session.save(function (err) {
 
             res.redirect('main')

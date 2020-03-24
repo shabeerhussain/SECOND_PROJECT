@@ -12,7 +12,8 @@ app.post('/trips/add', (req, res, next) => {
             title: req.body.title,
             start: req.body.start,
             end: req.body.end,
-            address: req.body.address
+            address: req.body.address,
+            creator: req.session.currentUser._id
         })
         .then(() => {
             res.redirect('/trips')
@@ -24,7 +25,9 @@ app.post('/trips/add', (req, res, next) => {
 //R list
 app.get('/trips', (req, res, next) => {
     Trip
-        .find({})
+        .find({
+            creator: req.session.currentUser._id
+        })
         .then((tripData) => {
             res.render("trip/list", {
                 tripsHbs: tripData
