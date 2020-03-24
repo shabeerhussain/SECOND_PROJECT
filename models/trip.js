@@ -6,7 +6,7 @@ const Trip = mongoose.model("trips", {
     end: Date,
     address: String,
     creator: {
-        type : mongoose.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'users'
     },
 })

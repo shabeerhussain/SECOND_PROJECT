@@ -1,25 +1,14 @@
- <h1>signup page</h1>
- 
- 
- 
- 
- <form id="form" action="/signup" method="POST">
-    <label for="username">Username</label><br>
-    <input required type="text" name="username"
-      placeholder="Your username">
-
-    <label for="password">Password</label><br>
-    <input required type="password" class="form-control" name="password"  
+<h1>signup page</h1>
+<form id="form" action="/signup" method="POST">
+  <label for="username">Username</label><br>
+  <input required type="text" name="username" placeholder="Your username">
+  <label for="password">Password</label><br>
+  <input required type="password" class="form-control" name="password"
     {{!-- name attribute of the inputs binds their values to req.body in key: value format which is picked up in auth.js file --}}
-      placeholder="********">
-
-
-    {{#if errorMessage}}
+    placeholder="********">
+  {{#if errorMessage}}
   <div class="error-message">{{ errorMessage }}</div>
-{{/if}}
-
-
-    <button type="submit">Create account</button>
-  </form>
-
-  
+  {{/if}}
+  <button type="submit">Create account</button>
+  <p class="account-message">Have an account? <a href="/login">Login</a></p>
+</form>

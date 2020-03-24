@@ -52,9 +52,10 @@
   }
 
   body{
-    background: url(/images/background.jpg);
+    /* background: url(/images/background.jpg); */
     background-size: cover;
     background-repeat: no-repeat;
+    
   }
 
   footer {
@@ -65,4 +66,7 @@
     background-color: red;
     color: white;
     text-align: center;
+  }
+  main {
+    padding: 20px;
   }
