@@ -40,6 +40,9 @@ router.get("/", (req, res, next) => {  // url - route to serve the login page
   res.redirect('/');
 });
 
+router.get("/about", (req, res, next) => {  // url - route to serve the about page
+  res.render("about");
+});
 
 // BCrypt to encrypt passwords
 const bcrypt         = require("bcrypt");
