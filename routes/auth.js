@@ -116,11 +116,8 @@ router.post("/login", (req, res, next) => { // this login
           req.session.isloggedin = true // setting up the session and redirecting the use to the main page
           req.session.currentUser = user;
           req.session.save(function (err) {
-
             res.redirect('main')
           })
-
-
         } else {
           res.render("auth/login", { // incase wrong info input
             errorMessage: "Wrong Password!"
@@ -128,7 +125,6 @@ router.post("/login", (req, res, next) => { // this login
           return;
         }
       })
-
     })
     .catch(error => {
       next(error);
