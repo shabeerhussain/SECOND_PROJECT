@@ -14,8 +14,11 @@
 </head>
 
 <body>
-  {{>menu}}
+  {{#if isloggedin}}
   {{>nav}}
+  {{else}}
+  {{>menu}}
+  {{/if}}
   <main>
     {{{body}}}
   </main>

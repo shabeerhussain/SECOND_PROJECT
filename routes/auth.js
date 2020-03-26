@@ -7,7 +7,7 @@ router.get("/signup", (req, res, next) => { // url - route to server the sign up
 });
 
 router.get("/", (req, res, next) => { // url - route to serve the login page
-  res.render("landing")
+  res.redirect('/login')
 });
 
 router.get("/login", (req, res, next) => { // url - route to serve the login page
@@ -16,7 +16,7 @@ router.get("/login", (req, res, next) => { // url - route to serve the login pag
 
 router.get("/logout", (req, res, next) => { // destroys the current user session
   req.session.destroy(function (err) {
-    res.redirect('/');
+    res.redirect('/login');
     // cannot access session here
   })
 });
@@ -30,18 +30,18 @@ router.get("/main", (req, res, next) => { // checks if user is logged in. then m
   res.redirect('/'); // redirect to login page
 });
 
-router.get("/private", (req, res, next) => { // checks if user is logged in. then private page otherwise redirect to the login page
-  //res.json(req.session);  
-  if (req.session.isloggedin) {
-    res.render('private')
-    return;
-  }
-  res.redirect('/');
-});
+// router.get("/private", (req, res, next) => { // checks if user is logged in. then private page otherwise redirect to the login page
+//   //res.json(req.session);  
+//   if (req.session.isloggedin) {
+//     res.render('private')
+//     return;
+//   }
+//   res.redirect('/');
+// });
 
-router.get("/about", (req, res, next) => { // url - route to serve the about page
-  res.render("about");
-});
+// router.get("/about", (req, res, next) => { // url - route to serve the about page
+//   res.render("about");
+// });
 
 // BCrypt to encrypt passwords
 const bcrypt = require("bcrypt");
@@ -50,12 +50,13 @@ const bcryptSalt = 10;
 router.post("/signup", (req, res, next) => { // when clicked signup
   const username = req.body.username;
   const password = req.body.password; // these are the signup form values
+  const email = req.body.email; 
   const salt = bcrypt.genSaltSync(bcryptSalt); // generating the salt
   const hashPass = bcrypt.hashSync(password, salt); // creating an hash of the password using salt
 
-  if (username === "" || password === "") { // if username and password is empty then serve them the signup page with error
+  if (username === "" || password === "" || email==="") { // if username and password is empty then serve them the signup page with error
     res.render("auth/signup", {
-      errorMessage: "No user name or password given"
+      errorMessage: "Error - Please check your details"
     });
     return;
   }
@@ -74,10 +75,11 @@ router.post("/signup", (req, res, next) => { // when clicked signup
       User.create({ // create new user in DB
           username,
           password: hashPass, // use hasPass & salt
-          hash: salt
+          hash: salt,
+          email:email
         })
         .then(() => { //if user is created sucessully then redirect to login page
-          res.redirect("/");
+          res.redirect("/login");
         })
         .catch(error => { // error so error 
           res.json(error)
@@ -114,10 +116,13 @@ router.post("/login", (req, res, next) => { // this login
       bcrypt.compare(req.body.password, user.password, (err, result) => { //bcrypt password check between user entered password and the password in the DB
         if (result == true) {
           req.session.isloggedin = true // setting up the session and redirecting the use to the main page
-          req.session.currentUser = user;
+          req.session.user=user // storing user info in the current session so we can access the user ID
           req.session.save(function (err) {
-            res.redirect('main')
+
+            res.redirect('/trips')
           })
+
+
         } else {
           res.render("auth/login", { // incase wrong info input
             errorMessage: "Wrong Password!"
@@ -125,6 +130,7 @@ router.post("/login", (req, res, next) => { // this login
           return;
         }
       })
+
     })
     .catch(error => {
       next(error);

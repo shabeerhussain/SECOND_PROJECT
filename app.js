@@ -29,8 +29,10 @@ app.use(session({
 }));
 
 app.use(function(req,res,next){
-    if(req.session.currentUser){
-        res.locals.user = req.session.currentUser;
+    res.locals.isloggedin = false;
+    if(req.session.isloggedin){
+        res.locals.user = req.session.user;
+        res.locals.isloggedin = true;
     }
     next();
 })
@@ -41,12 +43,13 @@ hbs.registerPartials(__dirname + '/views/partials'); //all files in views/partia
 app.set('views', path.join(__dirname, 'views')) //server the views in the views folder
 app.use(express.static(path.join(__dirname, 'public'))); //get static files from public folder
 app.set('view engine', 'hbs')
+//session stuff Jurgon
 app.use(function (req, res, next) {
     res.locals.session = req.session;
     next();
 });
 //DB connection
-mongoose.connect(process.env.db, {
+mongoose.connect(process.env.prod_db, {
         useNewUrlParser: true
     })
     .then(x => {

@@ -2,31 +2,45 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const Trip = require("../models/trip")
+const fetch = require('node-fetch');
 //C
 app.get('/trips/add', (req, res, next) => {
     res.render("trip/create")
 })
 app.post('/trips/add', (req, res, next) => {
-    Trip
+    const address = req.body.address
+    const apiKey = "AIzaSyAqx4mZpdi7OxChA3mHmwoJ38pIFc1Xux8" 
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`
+    const latlng = fetch(url).then(resp=>resp.json()).then(resp=>{
+        const {lat,lng} =  resp.results[0].geometry.location
+        Trip
         .create({
             title: req.body.title,
             start: req.body.start,
             end: req.body.end,
             address: req.body.address,
-            creator: req.session.currentUser._id
+            creator: req.session.user._id,
+            coordinates:[lat,lng]   // storing lat/lng
         })
         .then(() => {
             res.redirect('/trips')
         })
         .catch((err) => {
-            res.send('error', err)
+            res.json(err); return;
         })
+        
+    }).catch(err=>{ // fetching lat/long of address
+    throw err;
+})
+
+    
 })
 //R list
 app.get('/trips', (req, res, next) => {
-    Trip
+    if(req.session.isloggedin){  // sh chanaged checking if user is logged in otherwise to login page
+        Trip
         .find({
-            creator: req.session.currentUser._id
+            creator: req.session.user._id
         })
         .then((tripData) => {
             res.render("trip/list", {
@@ -36,6 +50,8 @@ app.get('/trips', (req, res, next) => {
         .catch((err) => {
             res.send('error', err)
         })
+    }
+    
 })
 //R detail
 app.get("/trips/:id", (req, res, next) => {

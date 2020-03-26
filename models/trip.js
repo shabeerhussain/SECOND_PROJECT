@@ -9,6 +9,10 @@ const Trip = mongoose.model("trips", {
         type: mongoose.Types.ObjectId,
         ref: 'users'
     },
+    coordinates: {
+        type: [Number],
+        required: true
+        }
 })
 
 module.exports = Trip;
