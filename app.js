@@ -9,8 +9,8 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')(session);
 app.use(express.static('public'))
 //====bcrypt=================
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
+// const bcrypt = require("bcrypt");
+// const saltRounds = 10;
 //====bcrypt=================
 app.use(express.json()); //Used to parse JSON bodies
 app.use(bodyParser.urlencoded({ // data from the form is sent to router (works with auth.js in routes)
@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ // data from the form is sent to router (works w
 app.use(session({
     secret: "basic-auth-secret",
     cookie: {
-        maxAge: 60000
+        maxAge: 6000000
     },
     store: new MongoStore({
         mongooseConnection: mongoose.connection,
@@ -62,9 +62,17 @@ mongoose.connect(process.env.prod_db, {
 const router = require('./routes/auth'); // setting up all the routes a root
 app.use('/', router);
 app.use('/', require('./routes/index'));
-app.use('/', require('./routes/trip'));
+app.use('/', protect, require('./routes/trip'));
 // const calendar = require('./routes/calendar');
 // app.use('/', calendar);
+//protected pages
+function protect(req,res,next){
+    if(req.session.user){
+        next();
+    } else {
+        res.redirect("/login");
+    }
+}
 //listener
 const http = require('http');
 const server = http.createServer(app);

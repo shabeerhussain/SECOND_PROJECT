@@ -121,8 +121,6 @@ router.post("/login", (req, res, next) => { // this login
 
             res.redirect('/trips')
           })
-
-
         } else {
           res.render("auth/login", { // incase wrong info input
             errorMessage: "Wrong Password!"
@@ -130,7 +128,6 @@ router.post("/login", (req, res, next) => { // this login
           return;
         }
       })
-
     })
     .catch(error => {
       next(error);

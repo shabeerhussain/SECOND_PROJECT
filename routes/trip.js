@@ -3,6 +3,8 @@ const app = express()
 const bodyParser = require('body-parser')
 const Trip = require("../models/trip")
 const fetch = require('node-fetch');
+
+
 //C
 app.get('/trips/add', (req, res, next) => {
     res.render("trip/create")
@@ -57,7 +59,7 @@ app.get('/trips', (req, res, next) => {
 app.get('/calendar', (req, res, next) => {
     Trip
         .find({
-            creator: req.session.currentUser._id
+            creator: req.session.user._id
         })
         .lean()
         .then((tripData) => {

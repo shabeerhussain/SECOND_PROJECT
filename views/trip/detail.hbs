@@ -1,34 +1,29 @@
-
-
 <h1>{{tripsHbs.title}}</h1>
-
 {{tripsHbs.start}}-{{tripsHbs.end}}<br>
 {{tripsHbs.address}}<br>
 <span id="lat">{{tripsHbs.coordinates.[0]}}</span>
-<span id="lng">{{tripsHbs.coordinates.[1]}}</span>
+<span id="lng">{{tripsHbs.coordinates.[1]}}</span><br>
 <a href="/trips/update/{{tripsHbs._id}}">update</a><br>
 <a href="/trips/delete/{{tripsHbs._id}}">delete</a>
 <div id="map"></div>
-    <script>
-
-
-      function initMap() {
-      
- const lat = parseFloat(document.getElementById('lat').innerText);
- const lng = parseFloat(document.getElementById('lng').innerText);
- const myLatLng = {lat,lng}
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
-          center: myLatLng
-        });
-
-        var marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-          title: 'Hello World!'
-        });
-      }
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqx4mZpdi7OxChA3mHmwoJ38pIFc1Xux8&callback=initMap">
-    </script>
+<script>
+  function initMap() {
+    const lat = parseFloat(document.getElementById('lat').innerText);
+    const lng = parseFloat(document.getElementById('lng').innerText);
+    const myLatLng = {
+      lat,
+      lng
+    }
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: myLatLng
+    });
+    var marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+      title: 'Hello World!'
+    });
+  }
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqx4mZpdi7OxChA3mHmwoJ38pIFc1Xux8&callback=initMap"></script>
