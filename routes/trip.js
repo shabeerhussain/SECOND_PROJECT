@@ -53,6 +53,23 @@ app.get('/trips', (req, res, next) => {
     }
     
 })
+//R calendar
+app.get('/calendar', (req, res, next) => {
+    Trip
+        .find({
+            creator: req.session.currentUser._id
+        })
+        .lean()
+        .then((tripData) => {
+            debugger            
+            res.render("calendar", {
+                tripsHbs: JSON.stringify(tripData)
+            });
+        })
+        .catch((err) => {
+            res.send('error', err)
+        })
+})
 //R detail
 app.get("/trips/:id", (req, res, next) => {
     Trip

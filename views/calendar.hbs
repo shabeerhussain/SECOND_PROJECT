@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='utf-8' />
+  <link href='fullcalendar/core/main.css' rel='stylesheet' />
+  <link href='fullcalendar/daygrid/main.css' rel='stylesheet' />
+  <script src='fullcalendar/core/main.js'></script>
+  <script src='fullcalendar/daygrid/main.js'></script>
+  <script>
+
+    let trips = {{{tripsHbs}}};
+    let calendarItems = trips.map((trip)=> {
+      let theDate = new Date(trip.start);
+      if (theDate.getUTCMonth() < 10) {
+        return {title: trip.title, start: `${theDate.getUTCFullYear()}-0${theDate.getUTCMonth()+1}-${theDate.getUTCDate()}`}
+      } else {
+        return {title: trip.title, start: `${theDate.getUTCFullYear()}-${theDate.getUTCMonth()+1}-${theDate.getUTCDate()}`}
+      }
+    })
+    //trips = JSON.parse(trips);
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        events: calendarItems,
+        plugins: ['dayGrid']
+      });
+      calendar.render();
+    });
+  </script>
+</head>
+
+<body>
+  <div id='calendar'></div>
+</body>
+
+</html>
