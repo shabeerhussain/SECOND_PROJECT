@@ -34,13 +34,13 @@ app.use(function(req,res,next){
     }
     next();
 })
-const router = require('./routes/auth'); // setting up all the routes a root
-app.use('/', router);
+
 hbs.registerPartials(__dirname + '/views/partials'); //all files in views/partials will be treated as partials 
 // view engine setup
 app.set('views', path.join(__dirname, 'views')) //server the views in the views folder
 app.use(express.static(path.join(__dirname, 'public'))); //get static files from public folder
 app.set('view engine', 'hbs')
+//login session save user stuff
 app.use(function (req, res, next) {
     res.locals.session = req.session;
     next();
@@ -56,10 +56,12 @@ mongoose.connect(process.env.db, {
         console.error('Error connecting to mongo', err)
     });
 //import
-const index = require('./routes/index');
-app.use('/', index);
-const tripRoutes = require('./routes/trip');
-app.use('/', tripRoutes);
+const router = require('./routes/auth'); // setting up all the routes a root
+app.use('/', router);
+app.use('/', require('./routes/index'));
+app.use('/', require('./routes/trip'));
+// const calendar = require('./routes/calendar');
+// app.use('/', calendar);
 //listener
 const http = require('http');
 const server = http.createServer(app);

@@ -52,7 +52,7 @@
   }
 
   body{
-    /* background: url(/images/background.jpg); */
+    background: url(/images/background.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     
@@ -69,4 +69,9 @@
   }
   main {
     padding: 20px;
+  }
+  
+  #calendar {
+    max-width: 900px;
+    margin: 40px auto;
   }
